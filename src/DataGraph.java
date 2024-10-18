@@ -3,10 +3,6 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.*;
-import java.awt.*;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 public class DataGraph extends JPanel {
     private List<Integer> dataHistory;
