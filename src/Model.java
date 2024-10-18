@@ -27,7 +27,6 @@ public class Model {
         dataHistory.add(value);
     }
 
-    // Геттеры и сеттеры для minValue, maxValue, threshold, hysteresis и dataHistory
 
     public void setThreshold(int threshold) {
         this.threshold = threshold;

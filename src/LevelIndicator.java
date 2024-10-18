@@ -25,14 +25,11 @@ public class LevelIndicator extends JPanel {
         int width = getWidth();
         int height = getHeight();
 
-        // Отрисовываем фон
         g.setColor(Color.white);
         g.fillRect(0, 0, width, height);
 
-        // Определяем положение и высоту индикатора
         int indicatorHeight = (int) ((double) (currentValue - minValue) / (maxValue - minValue) * height);
 
-        // Ограничиваем высоту индикатора, чтобы он не выходил за границы
         indicatorHeight = Math.min(indicatorHeight, height);
 
         g.setColor(Color.GREEN);

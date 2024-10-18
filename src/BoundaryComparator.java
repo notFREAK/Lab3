@@ -11,14 +11,14 @@ public class BoundaryComparator {
         this.threshold = threshold;
         this.hysteresis = hysteresis;
         this.boundaryEventHandler = boundaryEventHandler;
-        this.dateFormat = new SimpleDateFormat("HH:mm:ss.S"); // Формат даты и времени
+        this.dateFormat = new SimpleDateFormat("HH:mm:ss.S");
     }
 
     public void checkBoundary(int previousValue, int currentValue) {
-        if (previousValue < threshold && currentValue >= threshold) {
+        if (previousValue < threshold + hysteresis && currentValue >= threshold + hysteresis) {
             String formattedTime = dateFormat.format(new Date());
             boundaryEventHandler.accept("Пересечена граница:\n Направление: Вверх Время: " + formattedTime);
-        } else if (previousValue > threshold && currentValue <= threshold) {
+        } else if (previousValue > threshold - hysteresis && currentValue <= threshold - hysteresis) {
             String formattedTime = dateFormat.format(new Date());
             boundaryEventHandler.accept("Пересечена граница:\n Направление: Вниз Время: " + formattedTime);
         }

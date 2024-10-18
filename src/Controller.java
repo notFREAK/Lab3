@@ -15,15 +15,6 @@ public class Controller {
         this.model = model;
         this.view = view;
 
-        // Настройка слайдера
-        view.getSlider().addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                // Реакция на изменение значения слайдера
-            }
-        });
-
-        // Настройка кнопки для применения значений
         view.getApplySettingsButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -45,7 +36,6 @@ public class Controller {
             }
         });
 
-        // Таймер для обновления данных
         timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override

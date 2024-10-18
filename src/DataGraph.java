@@ -34,31 +34,41 @@ public class DataGraph extends JPanel {
         int height = getHeight();
         int dataCount = dataHistory.size();
 
-        // Ограничение количества отображаемых данных в зависимости от ширины графика
-        int visibleDataCount = width; // количество значений, которое помещается на графике
+        int visibleDataCount = width;
         int startIndex = Math.max(0, dataCount - visibleDataCount);
 
-        // Масштабируемые размеры
         int stepX = Math.max(1, width / Math.max(1, visibleDataCount - 1));
 
-        // Рисуем накопленные данные
+        g.setColor(Color.RED);
+        int thresholdY = height - (int)((double)(threshold - minValue) / (maxValue - minValue) * height);
+        g.drawLine(0, thresholdY, width, thresholdY);
+
+        g.setColor(Color.GRAY);
+        int hysteresisY1 = thresholdY - (int)((double)(hysteresis) / (maxValue - minValue) * height);
+        int hysteresisY2 = thresholdY + (int)((double)(hysteresis) / (maxValue - minValue) * height);
+        g.drawLine(0, hysteresisY1, width, hysteresisY1);
+        g.drawLine(0, hysteresisY2, width, hysteresisY2);
+
+        ((Graphics2D)g).setStroke(new BasicStroke(3.0f));
+        g.setColor(Color.BLUE);
         int x = 0;
         for (int i = startIndex + 1; i < dataHistory.size(); i++) {
             int prevY = height - (int)((double)(dataHistory.get(i - 1) - minValue) / (maxValue - minValue) * height);
             int currY = height - (int)((double)(dataHistory.get(i) - minValue) / (maxValue - minValue) * height);
             g.drawLine(x, prevY, x + stepX, currY);
+            if (prevY < hysteresisY2 && currY >= hysteresisY2) {
+                g.setColor(Color.CYAN);
+                g.drawOval(x, hysteresisY2, 1,1);
+                g.setColor(Color.BLUE);
+            }
+            else if (prevY > hysteresisY1 && currY <= hysteresisY1) {
+                g.setColor(Color.CYAN);
+                g.drawOval(x, hysteresisY1, 1,1);
+                g.setColor(Color.BLUE);
+            }
             x += stepX;
         }
+        ((Graphics2D)g).setStroke(new BasicStroke(1.0f));
 
-        // Линии порога и гистерезиса
-        g.setColor(Color.RED);
-        int thresholdY = height - (int)((double)(threshold - minValue) / (maxValue - minValue) * height);
-        g.drawLine(0, thresholdY, width, thresholdY); // Сплошная линия порога
-
-        g.setColor(Color.GRAY);
-        int hysteresisY1 = thresholdY - (int)((double)(hysteresis) / (maxValue - minValue) * height);
-        int hysteresisY2 = thresholdY + (int)((double)(hysteresis) / (maxValue - minValue) * height);
-        g.drawLine(0, hysteresisY1, width, hysteresisY1); // Пунктирная линия гистерезиса (верхняя)
-        g.drawLine(0, hysteresisY2, width, hysteresisY2); // Пунктирная линия гистерезиса (нижняя)
     }
 }
